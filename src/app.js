@@ -36,26 +36,29 @@ async function getPosts() {
 
 // create a new post
 async function submitPost() {
-  console.log('inside create');
   const newPost = {
     id: Math.floor(Math.random() * 1000000),
     title: ui.titleInput.value,
     body: ui.bodyInput.value,
   };
-  await axios
-    .post('http://localhost:3000/posts', newPost)
-    .then((res) => {
-      if (res.status === 201) {
-        ui.clearInputs();
-        ui.showAlert('Post successfully added', 'alert-success');
-        getPosts();
-        hideMessage();
-      }
-    })
-    .catch((err) => ui.showAlert(err.message, 'alert-danger'));
+  if (ui.titleInput.value !== '' && ui.bodyInput.value !== '') {
+    await axios
+      .post('http://localhost:3000/posts', newPost)
+      .then((res) => {
+        if (res.status === 201) {
+          ui.clearInputs();
+          ui.showAlert('Post successfully added', 'alert-success');
+          getPosts();
+          hideMessage();
+        }
+      })
+      .catch((err) => ui.showAlert(err.message, 'alert-danger'));
+  } else {
+    ui.showAlert(`You can't submit an empty post!`, 'alert-warning');
+  }
 }
 
-// delete post cia it's id
+// delete post via it's id
 async function deletePost(id) {
   await axios
     .delete(`http://localhost:3000/posts/${id}`)

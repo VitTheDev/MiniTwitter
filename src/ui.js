@@ -11,7 +11,7 @@ class UI {
   // show all posts
   showPosts(posts) {
     let output = '';
-    posts.map((post) => {
+    posts.reverse().map((post) => {
       output += `
       <div class="card mb-3">
         <div class="card-body">
